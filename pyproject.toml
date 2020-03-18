@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "gigantum2overleaf"
+version = "0.1.0"
+description = "An opinionated package for integrating Gigantum and Overleaf Projects"
+authors = ["Dean Kleissas <dean@gigantum.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/gigantum/gigantum2overleaf"
+repository = "https://github.com/gigantum/gigantum2overleaf"
+keywords = ["data-science", "latex"]
+include = [
+    "LICENSE",
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+mypy = "^0.770"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
