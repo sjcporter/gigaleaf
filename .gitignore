@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 /.idea
 /figantleaf.py
+/tests/resources/secrets.json
