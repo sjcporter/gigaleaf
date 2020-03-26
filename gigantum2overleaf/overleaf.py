@@ -32,17 +32,19 @@ class Overleaf:
                 # Overleaf project does not exist locally yet, clone
                 self._clone()
 
-    def _commit(self) -> str:
+    def commit(self) -> str:
         """
 
         Returns:
 
         """
-        output = call_subprocess(['git', 'commit', '-m', 'Updating Linked Gigantum Files'],
-                                 self.overleaf_repo_directory, check=True)
-        return output
+        output1 = call_subprocess(['git', 'add', '-A'],
+                                  self.overleaf_repo_directory, check=True)
+        output2 = call_subprocess(['git', 'commit', '-m', 'Updating Linked Gigantum Files'],
+                                  self.overleaf_repo_directory, check=True)
+        return output1 + output2
 
-    def _pull(self) -> str:
+    def pull(self) -> str:
         """
 
         Returns:
@@ -52,7 +54,7 @@ class Overleaf:
                                  self.overleaf_repo_directory, check=True)
         return output
 
-    def _push(self) -> str:
+    def push(self) -> str:
         """
 
         Returns:
@@ -73,7 +75,7 @@ class Overleaf:
 
         os.makedirs(self.overleaf_repo_directory)
 
-        email, password = self._get_creds()
+        # email, password = self._get_creds()
 
         print("Cloning Overleaf Project to output/untracked/overleaf/project")
         # full_url = self.config.git_url.replace("https://", f"https://{email}:{password}@")

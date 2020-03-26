@@ -56,12 +56,14 @@ def gigantum_project_fixture():
     if os.path.isdir(gigantum_overleaf_dir):
         # Remove gigantum dir in the project IN overleaf
         shutil.rmtree(gigantum_overleaf_dir)
-        call_subprocess(['git', 'add', '-A'], overleaf_project_dir, check=True)
-        call_subprocess(['git', 'commit', '-m', 'Cleaning up integration test'],
-                        overleaf_project_dir, check=True)
+        git_status = call_subprocess(['git', 'status'], overleaf_project_dir, check=True)
+        if "nothing to commit, working tree clean" not in git_status:
+            call_subprocess(['git', 'add', '-A'], overleaf_project_dir, check=True)
+            call_subprocess(['git', 'commit', '-m', 'Cleaning up integration test'],
+                            overleaf_project_dir, check=True)
 
-        call_subprocess(['git', 'push'],
-                        overleaf_project_dir, check=True)
+            call_subprocess(['git', 'push'],
+                            overleaf_project_dir, check=True)
 
     # Clean up test project
     shutil.rmtree(unit_test_working_dir)
