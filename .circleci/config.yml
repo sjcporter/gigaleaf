@@ -7,30 +7,22 @@ jobs:
 
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - deps-{{ checksum "poetry.lock" }}
       - run:
           name: Install Dependencies
+          working_directory: ~/project
           command: |
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
             source $HOME/.poetry/env
             poetry install --no-root
-      - save_cache:
-          key: deps-{{ checksum "poetry.lock" }}
-          paths:
-            - /home/circleci/.cache/pypoetry/virtualenvs
-
-      # Run mypy type checking
       - run:
-          working_directory: ~/project
           name: Run mypy
+          working_directory: ~/project
           command: |
             pwd
             poetry run mypy --strict -p gigaleaf
       - run:
-          working_directory: ~/project
           name: Run Pytest, report coverage
+          working_directory: ~/project
           command: |
             poetry run coverage run --omit="/home/circleci/.cache/pypoetry/virtualenvs" -m pytest
 
