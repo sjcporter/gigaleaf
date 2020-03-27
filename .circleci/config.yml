@@ -18,8 +18,7 @@ jobs:
           name: Run mypy
           working_directory: ~/project
           command: |
-            pwd
-            poetry run mypy --strict -p gigaleaf
+            poetry run python -m mypy --strict -p gigaleaf
       - run:
           name: Run Pytest, report coverage
           working_directory: ~/project
