@@ -15,6 +15,8 @@ include = [
 [tool.poetry.dependencies]
 python = "^3.7"
 requests = "^2.23.0"
+pytest-cov = "^2.8.1"
+codecov = "^2.0.22"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

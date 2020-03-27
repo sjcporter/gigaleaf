@@ -75,7 +75,7 @@ class TestGigaleaf:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
 
-        gigaleaf.link_image('output/fig1.png')
+        gigaleaf.link_image('output/fig1.png', width='0.8\\textwidth')
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is True
@@ -129,7 +129,8 @@ class TestGigaleaf:
         gigaleaf.sync()
 
         # Delete everything in untracked, reinit, and should still not see the files
-        shutil.rmtree(Gigantum.get_overleaf_root_directory())
+        shutil.rmtree(gigaleaf.overleaf.overleaf_repo_directory)
+        gigaleaf = None
 
         gigaleaf = Gigaleaf()
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
