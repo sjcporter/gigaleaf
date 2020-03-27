@@ -15,7 +15,7 @@ jobs:
           command: |
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
             source $HOME/.poetry/env
-            poetry install
+            poetry install --no-root
       - save_cache:
           key: deps-{{ checksum "poetry.lock" }}
           paths:
@@ -25,7 +25,8 @@ jobs:
       - run:
           name: Run mypy
           command: |
-            poetry run python -m mypy --strict -p gigaleaf
+            pwd
+            poetry run mypy --strict -p gigaleaf
       - run:
           name: Run Pytest, report coverage
           command: |
