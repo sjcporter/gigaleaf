@@ -21,6 +21,7 @@ jobs:
           name: Install Dependencies
           working_directory: ~/project
           command: |
+            poetry --version
             poetry install --no-root
       - run:
           name: Run mypy
