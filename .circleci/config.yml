@@ -11,12 +11,12 @@ jobs:
           name: Uninstall old poetry
           working_directory: ~/project
           command: |
-            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_UNINSTALL=1 python
+            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_UNINSTALL=1 python3
       - run:
           name: Install latest poetry
           working_directory: ~/project
           command: |
-            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
       - run:
           name: Install Dependencies
           working_directory: ~/project
