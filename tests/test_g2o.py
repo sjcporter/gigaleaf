@@ -68,7 +68,39 @@ class TestG2O:
                     'fig1.png').is_file() is True
 
     def test_update_image(self, gigantum_project_fixture):
-        pass
+
+        g2o = G2O()
+
+        assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
+                    'fig1_png.json').is_file() is False
+
+        g2o.link_image('output/fig1.png')
+
+        assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
+                    'fig1_png.json').is_file() is True
+
+        g2o.sync()
+
+        assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data',
+                    'fig1.png').is_file() is True
+
+        metadata_file = Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata', 'fig1_png.json')
+        with open(metadata_file, 'rt') as mf:
+            data = json.load(mf)
+
+        first_hash = data['content_hash']
+
+        test_dir = Path(__file__).parent.absolute()
+        shutil.copyfile(Path(test_dir, 'resources', 'fig1.png').as_posix(),
+                        Path(Gigantum.get_project_root(), 'output', 'fig1.png'))
+
+        g2o.sync()
+
+        metadata_file = Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata', 'fig1_png.json')
+        with open(metadata_file, 'rt') as mf:
+            data = json.load(mf)
+
+        assert first_hash != data['content_hash']
 
     def test_unlink_image(self, gigantum_project_fixture):
         pass

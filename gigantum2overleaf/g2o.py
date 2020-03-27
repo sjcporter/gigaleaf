@@ -74,4 +74,4 @@ class G2O:
         Returns:
 
         """
-        pass
+        raise NotImplemented
