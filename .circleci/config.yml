@@ -23,11 +23,13 @@ jobs:
 
       # Run mypy type checking
       - run:
+          working_directory: ~/project
           name: Run mypy
           command: |
             pwd
             poetry run mypy --strict -p gigaleaf
       - run:
+          working_directory: ~/project
           name: Run Pytest, report coverage
           command: |
             poetry run coverage run --omit="/home/circleci/.cache/pypoetry/virtualenvs" -m pytest
