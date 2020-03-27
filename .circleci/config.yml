@@ -8,7 +8,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install poetry
+          name: Uninstall old poetry
+          working_directory: ~/project
+          command: |
+            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_UNINSTALL=1 python
+      - run:
+          name: Install latest poetry
           working_directory: ~/project
           command: |
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
