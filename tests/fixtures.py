@@ -9,8 +9,8 @@ import json
 
 from unittest.mock import patch
 
-from gigantum2overleaf.utils import call_subprocess
-from gigantum2overleaf.gigantum import Gigantum
+from gigaleaf.utils import call_subprocess
+from gigaleaf.gigantum import Gigantum
 
 
 @pytest.fixture

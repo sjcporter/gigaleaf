@@ -1,12 +1,12 @@
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 from dataclasses import dataclass
 import os
 import json
 import getpass
+from pathlib import Path
 
-
-from gigantum2overleaf.gigantum import Gigantum
-from gigantum2overleaf.utils import call_subprocess
+from gigaleaf.gigantum import Gigantum
+from gigaleaf.utils import call_subprocess
 
 
 @dataclass
@@ -32,16 +32,37 @@ class Overleaf:
                 # Overleaf project does not exist locally yet, clone
                 self._clone()
 
+    def _git(self, cmd_tokens: List[str], cwd: str) -> str:
+        """Execute a subprocess call and properly benchmark and log
+
+        Args:
+            cmd_tokens: List of command tokens, e.g., ['ls', '-la']
+            cwd: Current working directory
+
+        Returns:
+            Decoded stdout of called process after completing
+
+        Raises:
+            subprocess.CalledProcessError
+        """
+        email, password = self._get_creds()
+        env_vars = os.environ
+        env_vars['OVERLEAF_USERNAME'] = email
+        env_vars['OVERLEAF_PASSWORD'] = password
+        env_vars['GIT_ASKPASS'] = Path(Path(__file__).parent.absolute(), 'askpass.py').as_posix()
+
+        return call_subprocess(['git'] + cmd_tokens, cwd, check=True, shell=False, env=dict(env_vars))
+
     def commit(self) -> str:
         """
 
         Returns:
 
         """
-        output1 = call_subprocess(['git', 'add', '-A'],
-                                  self.overleaf_repo_directory, check=True)
-        output2 = call_subprocess(['git', 'commit', '-m', 'Updating Linked Gigantum Files'],
-                                  self.overleaf_repo_directory, check=True)
+        output1 = self._git(['add', '-A'], self.overleaf_repo_directory)
+        output2 = self._git(['commit', '-m', f'Updating linked Gigantum files ({Gigantum.get_current_revision()})'],
+                            self.overleaf_repo_directory)
+
         return output1 + output2
 
     def pull(self) -> str:
@@ -50,9 +71,7 @@ class Overleaf:
         Returns:
 
         """
-        output = call_subprocess(['git', 'pull'],
-                                 self.overleaf_repo_directory, check=True)
-        return output
+        return self._git(['pull'], self.overleaf_repo_directory)
 
     def push(self) -> str:
         """
@@ -60,9 +79,7 @@ class Overleaf:
         Returns:
 
         """
-        output = call_subprocess(['git', 'push'],
-                                 self.overleaf_repo_directory, check=True)
-        return output
+        return self._git(['push'], self.overleaf_repo_directory)
 
     def _clone(self) -> None:
         """
@@ -75,12 +92,9 @@ class Overleaf:
 
         os.makedirs(self.overleaf_repo_directory)
 
-        # email, password = self._get_creds()
-
         print("Cloning Overleaf Project to output/untracked/overleaf/project")
-        # full_url = self.config.git_url.replace("https://", f"https://{email}:{password}@")
-        output = call_subprocess(['git', 'clone', self.config.git_url, self.overleaf_repo_directory],
-                                 self.overleaf_repo_directory, check=True)
+        output = self._git(['clone', self.config.git_url, self.overleaf_repo_directory], self.overleaf_repo_directory)
+
         print(output)
 
     def _load_config(self) -> OverleafConfig:

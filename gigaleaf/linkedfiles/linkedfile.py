@@ -5,8 +5,8 @@ import json
 import hashlib
 import shutil
 
-from gigantum2overleaf.gigantum import Gigantum
-from gigantum2overleaf.linkedfiles.metadata import ImageFileMetadata, LinkedFileMetadata
+from gigaleaf.gigantum import Gigantum
+from gigaleaf.linkedfiles.metadata import ImageFileMetadata, LinkedFileMetadata
 
 
 class LinkedFile(ABC):

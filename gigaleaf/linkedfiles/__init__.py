@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import glob
 
-from gigantum2overleaf.linkedfiles.image import LinkedFile, ImageFile
+from gigaleaf.linkedfiles.image import ImageFile
 
 
 def load_linked_file(metadata_filename: str) -> Union[ImageFile]:

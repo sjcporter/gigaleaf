@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "gigantum2overleaf"
+name = "gigaleaf"
 version = "0.1.0"
 description = "An opinionated package for integrating Gigantum and Overleaf Projects"
 authors = ["Dean Kleissas <dean@gigantum.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/gigantum/gigantum2overleaf"
-repository = "https://github.com/gigantum/gigantum2overleaf"
+homepage = "https://github.com/gigantum/gigaleaf"
+repository = "https://github.com/gigantum/gigaleaf"
 keywords = ["data-science", "latex"]
 include = [
     "LICENSE",

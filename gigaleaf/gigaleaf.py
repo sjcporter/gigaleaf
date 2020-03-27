@@ -1,14 +1,14 @@
 from typing import Optional
 from pathlib import Path
 
-from gigantum2overleaf.overleaf import Overleaf
-from gigantum2overleaf.gigantum import Gigantum
+from gigaleaf.overleaf import Overleaf
+from gigaleaf.gigantum import Gigantum
 
-from gigantum2overleaf.linkedfiles.image import ImageFile
-from gigantum2overleaf.linkedfiles import load_linked_file, load_all_linked_files
+from gigaleaf.linkedfiles.image import ImageFile
+from gigaleaf.linkedfiles import load_linked_file, load_all_linked_files
 
 
-class G2O:
+class Gigaleaf:
     def __init__(self) -> None:
         self.overleaf = Overleaf()
         self.gigantum = Gigantum(self.overleaf.overleaf_repo_directory)
@@ -31,13 +31,12 @@ class G2O:
             safe_filename = ImageFile.get_safe_filename(gigantum_relative_path)
             label = f"fig:{Path(safe_filename).stem}"
 
-        kwargs = {"gigantum_relative_path": gigantum_relative_path,
-                  "caption": caption,
+        kwargs = {"caption": caption,
                   "label": label,
                   "width": width,
                   "alignment": alignment}
 
-        ImageFile.link(**kwargs)
+        ImageFile.link(gigantum_relative_path, **kwargs)
 
     def unlink_image(self, relative_path: str) -> None:
         """
@@ -49,7 +48,9 @@ class G2O:
 
         """
         metadata_filename = ImageFile.get_metadata_filename(relative_path)
-        img_file = load_linked_file(metadata_filename)
+        metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
+                                     'project', 'gigantum', 'metadata', metadata_filename)
+        img_file = load_linked_file(metadata_abs_filename)
         img_file.unlink()
 
     def sync(self) -> None:

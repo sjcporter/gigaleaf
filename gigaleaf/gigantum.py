@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from gigantum2overleaf.utils import call_subprocess
+from gigaleaf.utils import call_subprocess
 
 
 class Gigantum:

@@ -2,25 +2,25 @@ from pathlib import Path
 import json
 import shutil
 
-from gigantum2overleaf import G2O
-from gigantum2overleaf.gigantum import Gigantum
+from gigaleaf import Gigaleaf
+from gigaleaf.gigantum import Gigantum
 from tests.fixtures import gigantum_project_fixture
 
 
-class TestG2O:
+class TestGigaleaf:
     def test_empty_sync(self, gigantum_project_fixture):
-        g2o = G2O()
+        gigaleaf = Gigaleaf()
 
         # should be a no-op and not error
-        g2o.sync()
+        gigaleaf.sync()
 
     def test_link_image_with_defaults(self, gigantum_project_fixture):
-        g2o = G2O()
+        gigaleaf = Gigaleaf()
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
 
-        g2o.link_image('output/fig1.png')
+        gigaleaf.link_image('output/fig1.png')
 
         metadata_file = Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata', 'fig1_png.json')
         assert metadata_file.is_file() is True
@@ -38,30 +38,31 @@ class TestG2O:
         assert data['alignment'] == 'center'
 
     def test_link_image_and_sync(self, gigantum_project_fixture):
-        g2o = G2O()
+        gigaleaf = Gigaleaf()
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
 
-        g2o.link_image('output/fig1.png')
+        gigaleaf.link_image('output/fig1.png', caption="My figure", label='fig111', alignment='right',
+                            width='0.3\\textwidth')
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is True
 
-        g2o.sync()
+        gigaleaf.sync()
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data',
                     'fig1.png').is_file() is True
 
         # Delete everything in untracked, reinit, and should still see the files
-        g2o = None
-        shutil.rmtree(Gigantum.get_overleaf_root_directory())
+        shutil.rmtree(gigaleaf.overleaf.overleaf_repo_directory)
+        gigaleaf = None
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data',
                     'fig1.png').is_file() is False
-        g2o = G2O()
+        gigaleaf = Gigaleaf()
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is True
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data',
@@ -69,17 +70,17 @@ class TestG2O:
 
     def test_update_image(self, gigantum_project_fixture):
 
-        g2o = G2O()
+        gigaleaf = Gigaleaf()
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
 
-        g2o.link_image('output/fig1.png')
+        gigaleaf.link_image('output/fig1.png')
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is True
 
-        g2o.sync()
+        gigaleaf.sync()
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data',
                     'fig1.png').is_file() is True
@@ -94,7 +95,7 @@ class TestG2O:
         shutil.copyfile(Path(test_dir, 'resources', 'fig1.png').as_posix(),
                         Path(Gigantum.get_project_root(), 'output', 'fig1.png'))
 
-        g2o.sync()
+        gigaleaf.sync()
 
         metadata_file = Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata', 'fig1_png.json')
         with open(metadata_file, 'rt') as mf:
@@ -103,4 +104,35 @@ class TestG2O:
         assert first_hash != data['content_hash']
 
     def test_unlink_image(self, gigantum_project_fixture):
-        pass
+        gigaleaf = Gigaleaf()
+
+        assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
+                    'fig1_png.json').is_file() is False
+
+        gigaleaf.link_image('output/fig1.png')
+
+        assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
+                    'fig1_png.json').is_file() is True
+
+        gigaleaf.sync()
+
+        assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data',
+                    'fig1.png').is_file() is True
+
+        gigaleaf.unlink_image('output/fig1.png')
+
+        assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
+                    'fig1_png.json').is_file() is False
+        assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data',
+                    'fig1.png').is_file() is False
+
+        gigaleaf.sync()
+
+        # Delete everything in untracked, reinit, and should still not see the files
+        shutil.rmtree(Gigantum.get_overleaf_root_directory())
+
+        gigaleaf = Gigaleaf()
+        assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
+                    'fig1_png.json').is_file() is False
+        assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data',
+                    'fig1.png').is_file() is False

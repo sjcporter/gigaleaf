@@ -1,6 +1,6 @@
 import os
 
-from gigantum2overleaf.overleaf import Overleaf
+from gigaleaf.overleaf import Overleaf
 from tests.fixtures import gigantum_project_fixture
 
 

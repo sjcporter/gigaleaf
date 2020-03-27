@@ -1,9 +1,9 @@
+from typing import List, Optional
 import subprocess
-from typing import List
 
 
 def call_subprocess(cmd_tokens: List[str], cwd: str, check: bool = True,
-                    shell: bool = False) -> str:
+                    shell: bool = False, env: Optional[dict] =None) -> str:
     """Execute a subprocess call and properly benchmark and log
 
     Args:
@@ -11,6 +11,7 @@ def call_subprocess(cmd_tokens: List[str], cwd: str, check: bool = True,
         cwd: Current working directory
         check: Raise exception if command fails
         shell: Run as shell command (not recommended)
+        env: environment variables to pass to the subprocess
 
     Returns:
         Decoded stdout of called process after completing
@@ -20,7 +21,7 @@ def call_subprocess(cmd_tokens: List[str], cwd: str, check: bool = True,
     """
     try:
         r = subprocess.run(cmd_tokens, cwd=cwd, stderr=subprocess.PIPE, stdout=subprocess.PIPE,
-                           check=check, shell=shell)
+                           check=check, shell=shell, env=env)
     except subprocess.CalledProcessError as err:
         raise IOError(f"An error occurred in a subprocess call:\ncmd: {' '.join(cmd_tokens)}\ncode: {err.returncode}\n"
                       f"output: {err.stdout} \nerror: {err.stderr}")
