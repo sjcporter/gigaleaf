@@ -8,12 +8,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Dependencies
+          name: Install poetry
           working_directory: ~/project
           command: |
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-            source $HOME/.poetry/env
-            cd ~/project
+      - run:
+          name: Install Dependencies
+          working_directory: ~/project
+          command: |
             poetry install --no-root
       - run:
           name: Run mypy
