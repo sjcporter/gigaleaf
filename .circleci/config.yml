@@ -3,7 +3,7 @@ version: 2
 jobs:
   run-tests:
     docker:
-      - image: circleci/python:3.7.4
+      - image: circleci/python:3.7.7
 
     steps:
       - checkout
@@ -11,6 +11,7 @@ jobs:
           working_directory: ~/project
           name: Install Poetry and dependencies in a venv
           command: |
+            poetry --version
             python3 -m venv venv
             . venv/bin/activate
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
@@ -34,6 +35,9 @@ jobs:
       - image: circleci/python:3.7.4
     steps:
       - checkout
+      - run:
+          name: Set authentication credentials
+          command: bash /home/circleci/project/.circleci/write_auth.sh
       - run:
           name: Push to PyPI
           command: |
@@ -64,7 +68,7 @@ workflows:
           requires:
             - run-tests
           filters:
-              tags:
-                only: /v[0-9]+(\.[0-9]+)*/
-              branches:
-                ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
