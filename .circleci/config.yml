@@ -8,33 +8,25 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Uninstall old poetry
           working_directory: ~/project
+          name: Install Poetry and dependencies in a venv
           command: |
-            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_UNINSTALL=1 python3
-      - run:
-          name: Install latest poetry
-          working_directory: ~/project
-          command: |
+            python3 -m venv venv
+            . venv/bin/activate
             curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
             source $HOME/.poetry/env
-            poetry --version
-      - run:
-          name: Install Dependencies
-          working_directory: ~/project
-          command: |
-            source $HOME/.poetry/env
-            poetry --version
             poetry install --no-root
       - run:
           name: Run mypy
           working_directory: ~/project
           command: |
+            . venv/bin/activate
             poetry run python3 -m mypy --strict -p gigaleaf
       - run:
           name: Run Pytest, report coverage
           working_directory: ~/project
           command: |
+            . venv/bin/activate
             poetry run coverage run --omit="/home/circleci/.cache/pypoetry/virtualenvs" -m pytest
 
   deploy:
