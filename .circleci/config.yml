@@ -11,23 +11,19 @@ jobs:
           working_directory: ~/project
           name: Install Poetry and dependencies in a venv
           command: |
-            poetry --version
-            python3 -m venv venv
-            . venv/bin/activate
-            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
-            source $HOME/.poetry/env
             poetry install --no-root
+      - run:
+          name: Set authentication credentials
+          command: bash /home/circleci/project/.circleci/write_auth.sh
       - run:
           name: Run mypy
           working_directory: ~/project
           command: |
-            . venv/bin/activate
             poetry run python3 -m mypy --strict -p gigaleaf
       - run:
           name: Run Pytest, report coverage
           working_directory: ~/project
           command: |
-            . venv/bin/activate
             poetry run coverage run --omit="/home/circleci/.cache/pypoetry/virtualenvs" -m pytest
 
   deploy:
@@ -35,9 +31,6 @@ jobs:
       - image: circleci/python:3.7.4
     steps:
       - checkout
-      - run:
-          name: Set authentication credentials
-          command: bash /home/circleci/project/.circleci/write_auth.sh
       - run:
           name: Push to PyPI
           command: |
