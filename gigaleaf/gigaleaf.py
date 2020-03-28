@@ -50,7 +50,7 @@ class Gigaleaf:
         metadata_filename = ImageFile.get_metadata_filename(relative_path)
         metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
                                      'project', 'gigantum', 'metadata', metadata_filename)
-        img_file = load_linked_file(metadata_abs_filename)
+        img_file = load_linked_file(metadata_abs_filename.as_posix())
         img_file.unlink()
 
     def sync(self) -> None:

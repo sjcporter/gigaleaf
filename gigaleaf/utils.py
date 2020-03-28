@@ -1,9 +1,9 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, AnyStr
 import subprocess
 
 
 def call_subprocess(cmd_tokens: List[str], cwd: str, check: bool = True,
-                    shell: bool = False, env: Optional[dict] =None) -> str:
+                    shell: bool = False, env: Optional[Dict[str, str]] = None) -> str:
     """Execute a subprocess call and properly benchmark and log
 
     Args:
