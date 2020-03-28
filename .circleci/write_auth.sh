@@ -1,6 +1,6 @@
 #!/bin/bash
 
-AUTH_PATH=/home/circleci/project/gigaleaf/tests/resources/secrets.json
+AUTH_PATH=/home/circleci/project/tests/resources/secrets.json
 
 echo "{" > ${AUTH_PATH}
 echo "  \"email\": \"${OVERLEAF_EMAIL}\"," >> ${AUTH_PATH}
