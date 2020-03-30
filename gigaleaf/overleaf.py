@@ -47,9 +47,9 @@ class Overleaf:
         """
         email, password = self._get_creds()
         env_vars = os.environ
-        env_vars['OVERLEAF_USERNAME'] = email
+        env_vars['OVERLEAF_EMAIL'] = email
         env_vars['OVERLEAF_PASSWORD'] = password
-        env_vars['GIT_ASKPASS'] = Path(Path(__file__).parent.absolute(), 'askpass.py').as_posix()
+        env_vars['GIT_ASKPASS'] = "gigaleaf_askpass"
 
         return call_subprocess(['git'] + cmd_tokens, cwd, check=True, shell=False, env=dict(env_vars))
 

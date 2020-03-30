@@ -11,7 +11,7 @@ jobs:
           working_directory: ~/project
           name: Install Poetry and dependencies in a venv
           command: |
-            poetry install --no-root
+            poetry install
       - run:
           name: Set authentication credentials
           command: bash /home/circleci/project/.circleci/write_auth.sh

@@ -25,3 +25,6 @@ mypy = "^0.770"
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+[tool.poetry.scripts]
+gigaleaf_askpass = 'gigaleaf.askpass'
