@@ -13,8 +13,8 @@ jobs:
           command: |
             poetry install
       - run:
-          name: Set authentication credentials
-          command: bash /home/circleci/project/.circleci/write_auth.sh
+          name: Set authentication credentials and git config
+          command: bash /home/circleci/project/.circleci/setup_circleci.sh
       - run:
           name: Run mypy
           working_directory: ~/project
