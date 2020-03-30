@@ -9,7 +9,7 @@ from sys import argv
 from os import environ
 
 if 'username' in argv[1].lower():
-    print(environ['OVERLEAF_USERNAME'])
+    print(environ['OVERLEAF_EMAIL'])
     exit()
 
 if 'password' in argv[1].lower():
