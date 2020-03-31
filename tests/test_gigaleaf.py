@@ -29,7 +29,7 @@ class TestGigaleaf:
             data = json.load(mf)
 
         assert data['gigantum_relative_path'] == 'output/fig1.png'
-        assert data['gigantum_version'] == '8e88dedc2aacca66e60d93a1fedd2eddb24851be'
+        assert data['gigantum_version'] == '62c362986ed5650cb054a9872ded79c9c6d8f4f6'
         assert data['classname'] == 'ImageFile'
         assert data['content_hash'] == 'init'
         assert data['caption'] is None
