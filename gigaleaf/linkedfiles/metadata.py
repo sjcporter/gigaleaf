@@ -16,3 +16,9 @@ class ImageFileMetadata(LinkedFileMetadata):
     width: str
     alignment: str
     caption: Optional[str] = None
+
+
+@dataclass
+class CsvFileMetadata(LinkedFileMetadata):
+    label: str
+    caption: Optional[str] = None

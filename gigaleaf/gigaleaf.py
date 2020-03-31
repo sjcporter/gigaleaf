@@ -5,6 +5,7 @@ from gigaleaf.overleaf import Overleaf
 from gigaleaf.gigantum import Gigantum
 
 from gigaleaf.linkedfiles.image import ImageFile
+from gigaleaf.linkedfiles.csv import CsvFile
 from gigaleaf.linkedfiles import load_linked_file, load_all_linked_files
 
 
@@ -52,6 +53,42 @@ class Gigaleaf:
                                      'project', 'gigantum', 'metadata', metadata_filename)
         img_file = load_linked_file(metadata_abs_filename.as_posix())
         img_file.unlink()
+
+    def link_csv(self, gigantum_relative_path: str, caption: Optional[str] = None,
+                 label: Optional[str] = None) -> None:
+        """
+
+        Args:
+            gigantum_relative_path:
+            caption:
+            label:
+
+        Returns:
+
+        """
+        if not label:
+            safe_filename = ImageFile.get_safe_filename(gigantum_relative_path)
+            label = f"table:{Path(safe_filename).stem}"
+
+        kwargs = {"caption": caption,
+                  "label": label}
+
+        CsvFile.link(gigantum_relative_path, **kwargs)
+
+    def unlink_csv(self, relative_path: str) -> None:
+        """
+
+        Args:
+            relative_path:
+
+        Returns:
+
+        """
+        metadata_filename = ImageFile.get_metadata_filename(relative_path)
+        metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
+                                     'project', 'gigantum', 'metadata', metadata_filename)
+        csv_file = load_linked_file(metadata_abs_filename.as_posix())
+        csv_file.unlink()
 
     def sync(self) -> None:
         """

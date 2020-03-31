@@ -4,9 +4,10 @@ import json
 import glob
 
 from gigaleaf.linkedfiles.image import ImageFile
+from gigaleaf.linkedfiles.csv import CsvFile
 
 
-def load_linked_file(metadata_filename: str) -> Union[ImageFile]:
+def load_linked_file(metadata_filename: str) -> Union[ImageFile, CsvFile]:
     """
 
     Args:
@@ -23,11 +24,13 @@ def load_linked_file(metadata_filename: str) -> Union[ImageFile]:
 
     if data['classname'] == 'ImageFile':
         return ImageFile(metadata_filename)
+    elif data['classname'] == 'CsvFile':
+        return CsvFile(metadata_filename)
     else:
         raise ValueError(f"Unsupported LinkedFile type: {data['classname']}")
 
 
-def load_all_linked_files(overleaf_project_dir: str) -> List[Union[ImageFile]]:
+def load_all_linked_files(overleaf_project_dir: str) -> List[Union[ImageFile, CsvFile]]:
     """
 
     Args:

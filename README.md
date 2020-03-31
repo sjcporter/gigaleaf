@@ -81,9 +81,10 @@ this depending on your exact project configuration:
 
 ```latex
 % gigaleaf setup
-\usepackage[export]{adjustbox}
-\usepackage{graphicx}
-\graphicspath{{gigantum/data/}{../data/}}
+\usepackage[export]{adjustbox} % Needed if linking image files
+\usepackage{graphicx} % Needed if linking image files
+\graphicspath{{gigantum/data/}{../data/}} % Needed if linking image files
+\usepackage{csvsimple} % Needed if linking csv files
 \usepackage{subfiles} % Best loaded last in the preamble
 % gigaleaf setup
 ```
