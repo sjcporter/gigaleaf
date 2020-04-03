@@ -39,7 +39,7 @@ class CsvFile(LinkedFile):
 % Image content hash: $content_hash
 \\begin{document}
 
-\\begin{table}[h]
+\\begin{table}[ht]
 \\centering
 \\csvautotabular[respect all]{$filename}
 \\label{$label}

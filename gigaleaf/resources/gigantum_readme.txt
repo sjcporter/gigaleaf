@@ -10,6 +10,8 @@ the preamble of your main.tex file:
   \usepackage{graphicx} % Needed if linking image files
   \graphicspath{{gigantum/data/}{../data/}} % Needed if linking image files. If you already have this, update existing
   \usepackage{csvsimple} % Needed if linking csv files
+  \usepackage{float} % Needed if linking csv files
+  \restylefloat{table} % Needed if linking csv files
   \usepackage{subfiles} % Best loaded last in the preamble
   % gigaleaf setup
 

@@ -111,6 +111,7 @@ class Gigaleaf:
         Returns:
             None
         """
+        print("Syncing with Overleaf. Please wait...")
         self.overleaf.pull()
 
         linked_files = load_all_linked_files(self.overleaf.overleaf_repo_directory)
@@ -120,6 +121,7 @@ class Gigaleaf:
         self.overleaf.commit()
 
         self.overleaf.push()
+        print("Sync complete.")
 
     def delete(self) -> None:
         """Removes the link between a Gigantum Project from an Overleaf Project
