@@ -1,0 +1,9 @@
+
+
+To interact with Overleaf, you must provide the email address and password that you use to log into your Overleaf account.
+This will be used to authenticate you when syncing with Overleaf.
+
+We'll save these to an untracked file locally at `output/untracked/overleaf/credentials.json`. This file will not
+get synced and collaborators will have to enter their own Overleaf email and password if they want to update the
+Overleaf Project. It is safe to delete this file, you'll just be prompted again for you credentials when needed.
+

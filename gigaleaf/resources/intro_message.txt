@@ -1,0 +1,14 @@
+
+
+This Gigantum Project is not yet linked to an Overleaf project.
+To do this, you must be able to use git based syncing, available with paid Overleaf plans. Note, this requirement is
+only on the *owner* of the project. You can learn more about Git and Overleaf here:
+https://www.overleaf.com/learn/how-to/How_do_I_push_a_new_project_to_Overleaf_via_git%3F.
+
+To start, get the 'git link' for the desired Overleaf Project:
+
+  1. Open the project on Overleaf
+  2. Click on the Overleaf Menu button at the top left corner
+  3. Under the 'Sync' section, click on 'Git'
+  4. Copy the url that looks something like 'https://git.overleaf.com/abcdef0123456789abcdef01'
+

@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "gigaleaf"
+version = "0.1.0"
+description = "An opinionated package for integrating Gigantum and Overleaf Projects"
+authors = ["Dean Kleissas <dean@gigantum.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/gigantum/gigaleaf"
+repository = "https://github.com/gigantum/gigaleaf"
+keywords = ["data-science", "latex", "gigantum", "overleaf"]
+include = [
+    "LICENSE",
+    "README.md",
+    "gigaleaf/resources/*"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+requests = "^2.23.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+mypy = "^0.770"
+codecov = "^2.0.22"
+pytest-cov = "^2.8.1"
+
+[tool.poetry.scripts]
+gigaleaf_askpass = "gigaleaf.askpass:askpass"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

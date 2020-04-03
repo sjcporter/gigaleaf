@@ -1,0 +1,67 @@
+version: 2
+
+jobs:
+  run-tests:
+    docker:
+      - image: circleci/python:3.7.7
+
+    steps:
+      - checkout
+      - run:
+          working_directory: ~/project
+          name: Install Poetry and dependencies in a venv
+          command: |
+            poetry install
+      - run:
+          name: Set authentication credentials and git config
+          command: bash /home/circleci/project/.circleci/setup_circleci.sh
+      - run:
+          name: Run mypy
+          working_directory: ~/project
+          command: |
+            poetry run python3 -m mypy --strict -p gigaleaf
+      - run:
+          name: Run Pytest, report coverage
+          working_directory: ~/project
+          command: |
+            poetry run coverage run --omit="/home/circleci/.cache/pypoetry/virtualenvs" -m pytest
+
+  deploy:
+    docker:
+      - image: circleci/python:3.7.7
+    steps:
+      - checkout
+      - run:
+          name: Push to PyPI
+          command: |
+            poetry publish --build --username "${PYPI_USERNAME}" --password "${PYPI_PASSWORD}" --no-interaction
+
+
+
+workflows:
+  version: 2
+
+  run-tests-workflow:
+    jobs:
+      - run-tests
+
+  # The deployment workflow publishes the package
+  deploy-workflow:
+    jobs:
+      # Runs build and test, but now just on Git tags (created from a GitHub release)
+      - run-tests:
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
+
+      # Runs the deployment job, just with the tags as well
+      - deploy:
+          requires:
+            - run-tests
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
