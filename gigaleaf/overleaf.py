@@ -166,7 +166,7 @@ class Overleaf:
         creds_message = Path(Path(__file__).parent.absolute(), 'resources', 'creds_message.txt').read_text()
 
         print(creds_message)
-        email = input("Overleaf email: ")
+        email = getpass.getpass("Overleaf email: ")
 
         # Prompt for password
         password = getpass.getpass("Overleaf password: ")
