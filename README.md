@@ -126,3 +126,11 @@ and should install as the user. This can be done by setting the following option
 poetry config virtualenvs.create false
 export PIP_USER=yes
 ```
+
+
+### Acknowledgements
+
+Thanks to Simon Porter ([@sjcporter](https://gigantum.com/sjcporter)) for valuable conversations and creating an
+early version of this concept in his ["What does a university look like" project](https://gigantum.com/sjcporter/what-does-a-university-look-like). 
+
+
