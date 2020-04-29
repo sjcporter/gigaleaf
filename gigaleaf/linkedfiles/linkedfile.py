@@ -142,8 +142,7 @@ class LinkedFile(ABC):
 
         cls.write_metadata(**full_kwargs)
 
-    @staticmethod
-    def _hash_file(filename: str) -> str:
+    def _hash_file(self, filename: str) -> str:
         """Method to hash files for comparing contents and detecting updates
 
         Args:
@@ -157,12 +156,16 @@ class LinkedFile(ABC):
 
         md5 = hashlib.md5()
 
-        with open(filename, 'rb') as fh:
-            while True:
-                data = fh.read(buffer_size)
-                if not data:
-                    break
-                md5.update(data)
+        # Hash the file contents and metadata file together in case either change
+        file_list = [filename, self.metadata_filename]
+
+        for f in file_list:
+            with open(f, 'rb') as fh:
+                while True:
+                    data = fh.read(buffer_size)
+                    if not data:
+                        break
+                    md5.update(data)
 
         return md5.hexdigest()
 
