@@ -128,7 +128,14 @@ class Overleaf:
         intro_message = Path(Path(__file__).parent.absolute(), 'resources', 'intro_message.txt').read_text()
         print(intro_message)
 
-        project_url = input("Overleaf Git url: ")
+        project_url = input("Overleaf Git url: ").strip()
+
+        # Handle if the user passed in the link or the whole git command that Overleaf displays
+        idx = project_url.find('git.overleaf.com')
+        if idx == -1:
+            raise ValueError("Overleaf Git URL is malformed. Should be like: https://git.overleaf.com/xxxxxxxxxxxxx")
+        else:
+            project_url = 'https://' + project_url[idx:].split(maxsplit=1)[0]
 
         # Prompt for email and password
         self._init_creds()
