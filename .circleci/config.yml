@@ -48,20 +48,10 @@ workflows:
   # The deployment workflow publishes the package
   deploy-workflow:
     jobs:
-      # Runs build and test, but now just on Git tags (created from a GitHub release)
-      - run-tests:
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*/
-            branches:
-              ignore: /.*/
-
-      # Runs the deployment job, just with the tags as well
+      # Runs the deployment job, just with the tags
       - deploy:
-          requires:
-            - run-tests
           filters:
             tags:
-              only: /v[0-9]+(\.[0-9]+)*/
+              only: /[0-9]+(\.[0-9]+)*/
             branches:
               ignore: /.*/
