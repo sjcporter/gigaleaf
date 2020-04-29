@@ -166,3 +166,13 @@ class TestGigaleaf:
 
         assert Path(Gigantum.get_overleaf_root_directory()).is_dir() is False
         assert Path(gigaleaf.overleaf.overleaf_config_file).is_file() is False
+
+    def test_delete_project_when_empty(self, gigantum_project_fixture):
+        gigaleaf = Gigaleaf()
+
+        assert Path(gigaleaf.overleaf.overleaf_config_file).is_file() is True
+
+        gigaleaf.delete()
+
+        assert Path(Gigantum.get_overleaf_root_directory()).is_dir() is False
+        assert Path(gigaleaf.overleaf.overleaf_config_file).is_file() is False

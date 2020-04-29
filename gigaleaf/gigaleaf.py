@@ -129,20 +129,35 @@ class Gigaleaf:
         Returns:
             None
         """
-        self.overleaf.pull()
+        gigaleaf_config_file = Path(self.overleaf.overleaf_config_file)
+        if gigaleaf_config_file.is_file():
+            print("Removing integration from Overleaf and Gigantum projects. Please wait...")
+            self.overleaf.pull()
 
-        # Remove Gigantum dir from Overleaf Project
-        gigantum_overleaf_dir = Path(self.overleaf.overleaf_repo_directory, 'gigantum').as_posix()
-        shutil.rmtree(gigantum_overleaf_dir)
+            gigantum_overleaf_dir = Path(self.overleaf.overleaf_repo_directory, 'gigantum')
+            if gigantum_overleaf_dir.is_dir():
+                # Remove Gigantum dir from Overleaf Project if it exists (maybe you haven't synced yet)
+                shutil.rmtree(gigantum_overleaf_dir.as_posix())
 
-        # Commit and Push
-        self.overleaf.commit()
-        self.overleaf.push()
+                # Commit and Push
+                try:
+                    self.overleaf.commit()
+                    self.overleaf.push()
+                except ValueError as err:
+                    if "Your branch is up to date with 'origin/master'" not in str(err):
+                        # If you haven't synced yet, you'll get a git error because removing the dir doesn't actually
+                        # change the repository state. If you get any other error, raise.
+                        raise
 
-        # Remove Overleaf Project dir and credentials from Gigantum Project
-        shutil.rmtree(self.gigantum.get_overleaf_root_directory())
+            # Remove Overleaf Project dir and credentials from Gigantum Project
+            overleaf_root_dir = Path(self.gigantum.get_overleaf_root_directory())
+            if overleaf_root_dir.is_dir():
+                shutil.rmtree(overleaf_root_dir.as_posix())
 
-        # Remove gigaleaf config file from Gigantum Project, commit.
-        Path(self.overleaf.overleaf_config_file).unlink()
-        self.gigantum.commit_overleaf_config_file(self.overleaf.overleaf_config_file)
+            # Remove gigaleaf config file from Gigantum Project & commit.
+            gigaleaf_config_file.unlink()
+            self.gigantum.commit_overleaf_config_file(gigaleaf_config_file.as_posix())
+            print("Removal complete.")
+        else:
+            print("gigaleaf has not been configured yet. Skipping removal process.")
 

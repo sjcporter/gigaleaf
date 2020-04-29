@@ -89,7 +89,7 @@ class Overleaf:
             the output from the git command
         """
         if os.path.isdir(self.overleaf_repo_directory):
-            raise IOError("Repository already has been cloned.")
+            raise ValueError("Repository already has been cloned.")
 
         os.makedirs(self.overleaf_repo_directory)
 
