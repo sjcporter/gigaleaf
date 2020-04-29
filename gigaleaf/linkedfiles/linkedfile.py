@@ -65,17 +65,17 @@ class LinkedFile(ABC):
         return Path(overleaf_gigantum_path, filename).absolute().as_posix()
 
     @staticmethod
-    def get_safe_filename(filename: str) -> str:
+    def get_safe_filename(relative_path: str) -> str:
         """Helper method to create a safe file name from the user's filename
 
         Args:
-            filename: a filename
+            relative_path: a filename
 
         Returns:
             a sanitized filename
         """
-        stem = Path(filename).stem
-        suffixes = Path(filename).suffixes
+        stem = Path(relative_path).stem
+        suffixes = Path(relative_path).suffixes
         for ch in ['`', '*', '_', '{', '}', '[', ']', '(', ')', '>',  '<', '#', '+', '.', '!', '$', ' ', '@', '&']:
             if ch in stem:
                 stem = stem.replace(ch, '-')
@@ -106,21 +106,24 @@ class LinkedFile(ABC):
         return safe_filename + suffix_str + ".json"
 
     @classmethod
-    def link(cls, gigantum_relative_path: str, **kwargs: Any) -> None:
+    def link(cls, relative_path: str, **kwargs: Any) -> None:
         """Method to link a file output in a Gigantum Project to an Overleaf project
 
         Args:
-            gigantum_relative_path: relative path in Gigantum (e.g. output/myfig1.png)
+            relative_path: relative path to the file from the current working dir, e.g. `../output/my_fig.png`
             **kwargs: args specific to each LinkedFile implementation
 
         Returns:
             None
         """
-        if Path(Gigantum.get_project_root(), gigantum_relative_path).is_file() is False:
+        file_path = Path(relative_path).resolve()
+        if file_path.is_file() is False:
             # File provided does not exist
-            raise ValueError(f"The file {gigantum_relative_path} does not exist. Cannot link.")
+            raise ValueError(f"The file {file_path} does not exist. Provide a relative path from the working"
+                             f"directory to your file. In Jupyter, the working directory is the directory containing "
+                             f"your notebook.")
 
-        metadata_filename = cls.get_metadata_filename(gigantum_relative_path)
+        metadata_filename = cls.get_metadata_filename(relative_path)
         metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
                                      'project', 'gigantum', 'metadata', metadata_filename)
 
@@ -133,11 +136,12 @@ class LinkedFile(ABC):
             # Set content hash to init so it is always detected as "modified" on first link
             content_hash = "init"
 
-        full_kwargs = {"gigantum_relative_path": gigantum_relative_path,
-                       "gigantum_version": Gigantum.get_current_revision(),
-                       "classname": cls.__name__,
-                       "content_hash": content_hash,
-                       "metadata_filename": metadata_filename}
+        full_kwargs = {
+            "gigantum_relative_path": file_path.relative_to(Path(Gigantum.get_project_root()).resolve()).as_posix(),
+            "gigantum_version": Gigantum.get_current_revision(),
+            "classname": cls.__name__,
+            "content_hash": content_hash,
+            "metadata_filename": metadata_filename}
         full_kwargs.update(kwargs)
 
         cls.write_metadata(**full_kwargs)

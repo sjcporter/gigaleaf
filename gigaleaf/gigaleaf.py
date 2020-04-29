@@ -16,12 +16,12 @@ class Gigaleaf:
         self.overleaf = Overleaf()
         self.gigantum = Gigantum(self.overleaf.overleaf_repo_directory)
 
-    def link_image(self, gigantum_relative_path: str, caption: Optional[str] = None, label: Optional[str] = None,
+    def link_image(self, relative_path: str, caption: Optional[str] = None, label: Optional[str] = None,
                    width: str = "0.5\\textwidth", alignment: str = 'center') -> None:
         """Method to link an image file to your Overleaf project for automatic updating
 
         Args:
-            gigantum_relative_path: relative path to the file, e.g. `output/my_fig.png`
+            relative_path: relative path to the file from the current working dir, e.g. `../output/my_fig.png`
             caption: The caption for the figure in the auto-generated latex subfile
             label: The label for the figure in the auto-generated latex subfile
             width: A string setting the width of the figure for the figure in the auto-generated latex subfile
@@ -37,7 +37,7 @@ class Gigaleaf:
             None
         """
         if not label:
-            safe_filename = ImageFile.get_safe_filename(gigantum_relative_path)
+            safe_filename = ImageFile.get_safe_filename(relative_path)
             label = f"fig:{Path(safe_filename).stem}"
 
         kwargs = {"caption": caption,
@@ -45,13 +45,13 @@ class Gigaleaf:
                   "width": width,
                   "alignment": alignment}
 
-        ImageFile.link(gigantum_relative_path, **kwargs)
+        ImageFile.link(relative_path, **kwargs)
 
     def unlink_image(self, relative_path: str) -> None:
         """Method to unlink an image file from your Overleaf project.
 
         Args:
-            relative_path: relative path to the file, e.g. `output/my_fig.png`
+            relative_path: relative path to the file from the current working dir, e.g. `../output/my_fig.png`
 
         Returns:
             None
@@ -62,12 +62,12 @@ class Gigaleaf:
         img_file = load_linked_file(metadata_abs_filename.as_posix())
         img_file.unlink()
 
-    def link_csv(self, gigantum_relative_path: str, caption: Optional[str] = None,
+    def link_csv(self, relative_path: str, caption: Optional[str] = None,
                  label: Optional[str] = None) -> None:
         """Method to link a csv file to your Overleaf project for automatic updating
 
         Args:
-            gigantum_relative_path: relative path to the file, e.g. `output/my_table.csv`
+            relative_path: relative path to the file from the current working dir, e.g. `../output/my_table.csv`
             caption: The caption for the table in the auto-generated latex subfile
             label: The label for the table in the auto-generated latex subfile
 
@@ -75,19 +75,19 @@ class Gigaleaf:
             None
         """
         if not label:
-            safe_filename = ImageFile.get_safe_filename(gigantum_relative_path)
+            safe_filename = ImageFile.get_safe_filename(relative_path)
             label = f"table:{Path(safe_filename).stem}"
 
         kwargs = {"caption": caption,
                   "label": label}
 
-        CsvFile.link(gigantum_relative_path, **kwargs)
+        CsvFile.link(relative_path, **kwargs)
 
     def unlink_csv(self, relative_path: str) -> None:
         """Method to unlink a csv file from your Overleaf project.
 
         Args:
-            relative_path: relative path to the file, e.g. `output/my_table.csv`
+            relative_path: relative path to the file from the current working dir, e.g. `../output/my_table.csv`
 
         Returns:
             None

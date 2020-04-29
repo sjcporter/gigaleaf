@@ -27,7 +27,7 @@ class TestGigaleaf:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
 
-        gigaleaf.link_image('output/fig1.png')
+        gigaleaf.link_image('../output/fig1.png')
 
         metadata_file = Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata', 'fig1_png.json')
         assert metadata_file.is_file() is True
@@ -51,7 +51,7 @@ class TestGigaleaf:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
 
-        gigaleaf.link_image('output/fig1.png', caption="My figure", label='fig111', alignment='right',
+        gigaleaf.link_image('../output/fig1.png', caption="My figure", label='fig111', alignment='right',
                             width='0.3\\textwidth')
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
@@ -83,7 +83,7 @@ class TestGigaleaf:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
 
-        gigaleaf.link_image('output/fig1.png', width='0.8\\textwidth')
+        gigaleaf.link_image('../output/fig1.png', width='0.8\\textwidth')
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is True
@@ -117,7 +117,7 @@ class TestGigaleaf:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
 
-        gigaleaf.link_image('output/fig1.png')
+        gigaleaf.link_image('../output/fig1.png')
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is True
@@ -127,7 +127,7 @@ class TestGigaleaf:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data',
                     'fig1.png').is_file() is True
 
-        gigaleaf.unlink_image('output/fig1.png')
+        gigaleaf.unlink_image('../output/fig1.png')
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
@@ -152,7 +152,7 @@ class TestGigaleaf:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is False
 
-        gigaleaf.link_image('output/fig1.png')
+        gigaleaf.link_image('../output/fig1.png')
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'fig1_png.json').is_file() is True

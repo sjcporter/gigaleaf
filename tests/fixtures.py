@@ -30,6 +30,8 @@ def gigantum_project_fixture():
     with patch.object(Gigantum, "get_project_root") as patched_gigantum:
         patched_gigantum.return_value = unit_test_working_dir
 
+        os.chdir(os.path.join(unit_test_working_dir, 'code'))
+
         with open(secret_file_path, 'rt') as sf:
             secrets = json.load(sf)
 

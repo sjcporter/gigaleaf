@@ -14,7 +14,7 @@ class TestCsvFile:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'test_csv.json').is_file() is False
 
-        gigaleaf.link_csv('output/test.csv', caption="My Cool Table", label="myfig1")
+        gigaleaf.link_csv('../output/test.csv', caption="My Cool Table", label="myfig1")
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'test_csv.json').is_file() is True
@@ -44,7 +44,7 @@ class TestCsvFile:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'test_csv.json').is_file() is False
 
-        gigaleaf.link_csv('output/test.csv', caption="My Cool Table", label="myfig1")
+        gigaleaf.link_csv('../output/test.csv', caption="My Cool Table", label="myfig1")
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'test_csv.json').is_file() is True
@@ -77,7 +77,7 @@ class TestCsvFile:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'test_csv.json').is_file() is False
 
-        gigaleaf.link_csv('output/test.csv', caption="My Cool Table", label="myfig1")
+        gigaleaf.link_csv('../output/test.csv', caption="My Cool Table", label="myfig1")
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'test_csv.json').is_file() is True
@@ -87,7 +87,7 @@ class TestCsvFile:
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data',
                     'test.csv').is_file() is True
 
-        gigaleaf.unlink_image('output/test.csv')
+        gigaleaf.unlink_image('../output/test.csv')
 
         assert Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'metadata',
                     'test_csv.json').is_file() is False
