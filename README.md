@@ -49,7 +49,7 @@ gigaleaf is currently designed to work inside Jupyter Notebooks running in Gigan
 * Link an output file
 
   ```python
-  gl.link_image('output/fig1.png')
+  gl.link_image('../output/fig1.png')
   ```
   
   Here, you pass the relative path in Gigantum to the that file you want to link. Currently image and csv files are
