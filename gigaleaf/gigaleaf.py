@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Dict, Any
 from pathlib import Path
 import shutil
 
@@ -7,6 +7,7 @@ from gigaleaf.gigantum import Gigantum
 
 from gigaleaf.linkedfiles.image import ImageFile
 from gigaleaf.linkedfiles.csv import CsvFile
+from gigaleaf.linkedfiles.dataframe import DataframeFile
 from gigaleaf.linkedfiles import load_linked_file, load_all_linked_files
 
 
@@ -40,10 +41,10 @@ class Gigaleaf:
             safe_filename = ImageFile.get_safe_filename(relative_path)
             label = f"fig:{Path(safe_filename).stem}"
 
-        kwargs = {"caption": caption,
-                  "label": label,
-                  "width": width,
-                  "alignment": alignment}
+        kwargs: Dict[str, Any] = {"caption": caption,
+                                  "label": label,
+                                  "width": width,
+                                  "alignment": alignment}
 
         ImageFile.link(relative_path, **kwargs)
 
@@ -78,8 +79,8 @@ class Gigaleaf:
             safe_filename = ImageFile.get_safe_filename(relative_path)
             label = f"table:{Path(safe_filename).stem}"
 
-        kwargs = {"caption": caption,
-                  "label": label}
+        kwargs: Dict[str, Any] = {"caption": caption,
+                                  "label": label}
 
         CsvFile.link(relative_path, **kwargs)
 
@@ -97,6 +98,40 @@ class Gigaleaf:
                                      'project', 'gigantum', 'metadata', metadata_filename)
         csv_file = load_linked_file(metadata_abs_filename.as_posix())
         csv_file.unlink()
+
+    def link_dataframe(self, relative_path: str, to_latex_kwargs: Dict[str, Any]) -> None:
+        """Method to link a dataframe file to your Overleaf project for automatic updating
+
+        Args:
+            relative_path: relative path to the file from the current working dir, e.g. `../output/my_table.csv`
+            to_latex_kwargs: a dictionary of key word arguments to pass into the pandas.DataFrame.to_latex method
+                             (https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_latex.html)
+
+        Returns:
+            None
+        """
+        # Clean kwargs sent to .to_latex()
+        if 'buf' in to_latex_kwargs:
+            del to_latex_kwargs['buf']
+
+        kwargs = {"to_latex_kwargs": to_latex_kwargs}
+
+        DataframeFile.link(relative_path, **kwargs)
+
+    def unlink_dataframe(self, relative_path: str) -> None:
+        """Method to unlink a dataframe file from your Overleaf project.
+
+        Args:
+            relative_path: relative path to the file from the current working dir, e.g. `../output/my_table.csv`
+
+        Returns:
+            None
+        """
+        metadata_filename = ImageFile.get_metadata_filename(relative_path)
+        metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
+                                     'project', 'gigantum', 'metadata', metadata_filename)
+        dataframe_file = load_linked_file(metadata_abs_filename.as_posix())
+        dataframe_file.unlink()
 
     def sync(self) -> None:
         """Method to synchronize your Gigantum and Overleaf projects.

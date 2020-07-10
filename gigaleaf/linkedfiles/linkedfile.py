@@ -36,7 +36,7 @@ class LinkedFile(ABC):
         Returns:
 
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     @property
     def data_filename(self) -> str:
@@ -106,7 +106,7 @@ class LinkedFile(ABC):
         return safe_filename + suffix_str + ".json"
 
     @classmethod
-    def link(cls, relative_path: str, **kwargs: Any) -> None:
+    def link(cls, relative_path: str, **kwargs: Dict[str, Any]) -> None:
         """Method to link a file output in a Gigantum Project to an Overleaf project
 
         Args:
@@ -185,6 +185,17 @@ class LinkedFile(ABC):
         else:
             return False
 
+    @abstractmethod
+    def _should_copy_file(self) -> bool:
+        """Method indicating True if when running `update()` the file is copied into Overleaf, or False if it should not
+
+        Sometimes you need the file (e.g. an image) and sometimes you don't (e.g. a dataframe)
+
+        Returns:
+            bool
+        """
+        raise NotImplementedError
+
     def update(self) -> None:
         """Method to update the file contents, latex subfile, and metadata file.
 
@@ -192,9 +203,10 @@ class LinkedFile(ABC):
 
         """
         if self._is_modified():
-            # Copy file
-            shutil.copyfile(Path(Gigantum.get_project_root(), self.metadata.gigantum_relative_path),
-                            self.data_filename)
+            if self._should_copy_file() is True:
+                # Copy file if needed
+                shutil.copyfile(Path(Gigantum.get_project_root(), self.metadata.gigantum_relative_path),
+                                self.data_filename)
 
             # Update commit hash in metadata
             kwargs = {"content_hash": self._hash_file(Path(Gigantum.get_project_root(),
@@ -212,8 +224,10 @@ class LinkedFile(ABC):
 
         """
         Path(self.metadata_filename).unlink()
-        Path(self.data_filename).unlink()
         Path(self.subfile_filename).unlink()
+        if self._should_copy_file() is True:
+            # If you inserted data in the Overleaf project, remove it.
+            Path(self.data_filename).unlink()
 
     @staticmethod
     def write_metadata(metadata_filename: str, **kwargs: Any) -> None:

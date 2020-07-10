@@ -57,6 +57,15 @@ gigaleaf is currently designed to work inside Jupyter Notebooks running in Gigan
   **You only need to call this once per file that you wish to track. Calling it again will update settings (e.g.
   a figure caption)**
   
+  
+* Unlink an output file
+
+  ```python
+  gl.unlink_image('../output/fig1.png')
+  ```
+  
+  Remove a file from linking and delete its data from the Overleaf project.
+  
 * Sync Projects
 
   ```python
@@ -69,7 +78,7 @@ gigaleaf is currently designed to work inside Jupyter Notebooks running in Gigan
 
 ### Advanced Usage
 
-gigaleaf also provides Latex subfiles that you can use into your Overleaf Project that make adding and updating content
+`gigaleaf` also provides Latex subfiles that you can use into your Overleaf Project that make adding and updating content
 from Gigantum trivial. To take full advantage of this, the link methods have optional arguments:
 
 `.link_image()` 
@@ -84,6 +93,11 @@ from Gigantum trivial. To take full advantage of this, the link methods have opt
 * caption: A caption that will be added to the table. If omitted, not caption is inserted.
 * label: A label to add to the table for referencing inside your Overleaf document.
 
+`.link_dataframe()` 
+
+* kwargs: A dictionary of kwargs to pass directly into `pandas.DataFrame.to_latex` when generating the subfile
+When using `link_dataframe()`, `gigaleaf` assumes you've pickled your dataframe using `pandas.DataFrame.to_pickle`.
+
 To use the subfiles generated you need to make a few modifications to your `main.tex` preamble. You may need to modify
 this depending on your exact project configuration:
 
@@ -95,6 +109,7 @@ this depending on your exact project configuration:
 \usepackage{csvsimple} % Needed if linking csv files
 \usepackage{float} % Needed if linking csv files
 \restylefloat{table} % Needed if linking csv files
+\usepackage{booktabs} % Needed if linking dataframe files 
 \usepackage{subfiles} % Best loaded last in the preamble
 % gigaleaf setup
 ```

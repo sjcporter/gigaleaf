@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Dict, Any
 from dataclasses import dataclass
 
 
@@ -22,3 +22,9 @@ class ImageFileMetadata(LinkedFileMetadata):
 class CsvFileMetadata(LinkedFileMetadata):
     label: str
     caption: Optional[str] = None
+
+
+@dataclass
+class DataframeFileMetadata(LinkedFileMetadata):
+    to_latex_kwargs: Dict[str, Any]
+

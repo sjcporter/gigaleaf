@@ -9,6 +9,16 @@ from gigaleaf.linkedfiles.metadata import ImageFileMetadata
 class ImageFile(LinkedFile):
     """A class for linking Image files"""
 
+    def _should_copy_file(self) -> bool:
+        """Method indicating True if when running `update()` the file is copied into Overleaf, or False if it should not
+
+        Sometimes you need the file (e.g. an image) and sometimes you don't (e.g. a dataframe)
+
+        Returns:
+            bool
+        """
+        return True
+
     def _load(self) -> ImageFileMetadata:
         """Method to load the metadata file into a dataclass
 

@@ -12,6 +12,7 @@ the preamble of your main.tex file:
   \usepackage{csvsimple} % Needed if linking csv files
   \usepackage{float} % Needed if linking csv files
   \restylefloat{table} % Needed if linking csv files
+  \usepackage{booktabs} % Needed if linking dataframe files
   \usepackage{subfiles} % Best loaded last in the preamble
   % gigaleaf setup
 
