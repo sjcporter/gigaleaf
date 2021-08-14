@@ -53,8 +53,8 @@ class ImageFile(LinkedFile):
 
 \\begin{figure}[bh]
 \\includegraphics[width=$width, $alignment]{$filename}
-\\label{$label}
-{$caption}
+$caption\\label{$label}
+
 \\end{figure}
 
 \\end{document}
