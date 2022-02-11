@@ -65,7 +65,8 @@ class DataframeFile(LinkedFile):
         with open(Path(Gigantum.get_project_root(),
                        self.metadata.gigantum_relative_path).absolute().as_posix(), 'rb') as f:
             df = pandas.read_pickle(f)
-            table = df.to_latex(**self.metadata.to_latex_kwargs)
+            with pd.set_option('max_colwidth', None):
+                table = df.to_latex(**self.metadata.to_latex_kwargs)
 
         filename = "gigantum/data/" + Path(self.metadata.gigantum_relative_path).name
 
