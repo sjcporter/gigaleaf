@@ -27,4 +27,8 @@ class CsvFileMetadata(LinkedFileMetadata):
 @dataclass
 class DataframeFileMetadata(LinkedFileMetadata):
     to_latex_kwargs: Dict[str, Any]
+    
+@dataclass
+class TexFileMetadata(LinkedFileMetadata):
+    additonal_args: Dict[str, Any]
 

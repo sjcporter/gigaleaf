@@ -47,7 +47,7 @@ class LinkedFile(ABC):
         Returns:
             absolute path to the file
         """
-        overleaf_gigantum_path = Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'data')
+        overleaf_gigantum_path = Path(Gigantum.get_overleaf_root_directory(),  'gigantum', 'data')
         return Path(overleaf_gigantum_path, Path(self.metadata.gigantum_relative_path).name).absolute().as_posix()
 
     @property
@@ -61,7 +61,7 @@ class LinkedFile(ABC):
         """
         filename = Path(self.metadata_filename).name
         filename = filename.replace('.json', '.tex')
-        overleaf_gigantum_path = Path(Gigantum.get_overleaf_root_directory(), 'project', 'gigantum', 'subfiles')
+        overleaf_gigantum_path = Path(Gigantum.get_overleaf_root_directory(), 'gigantum', 'subfiles')
         return Path(overleaf_gigantum_path, filename).absolute().as_posix()
 
     @staticmethod
@@ -125,7 +125,7 @@ class LinkedFile(ABC):
 
         metadata_filename = cls.get_metadata_filename(relative_path)
         metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
-                                     'project', 'gigantum', 'metadata', metadata_filename)
+                                     'gigantum', 'metadata', metadata_filename)
 
         if metadata_abs_filename.exists() is True:
             # This is an update to the link, so get the current content hash for the file.
@@ -249,7 +249,7 @@ class LinkedFile(ABC):
         data.update(kwargs)
 
         metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
-                                     'project', 'gigantum', 'metadata', metadata_filename)
+                                     'gigantum', 'metadata', metadata_filename)
         with open(metadata_abs_filename, 'wt') as mf:
             json.dump(data, mf)
 

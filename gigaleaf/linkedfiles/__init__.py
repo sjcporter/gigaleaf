@@ -6,9 +6,10 @@ import glob
 from gigaleaf.linkedfiles.image import ImageFile
 from gigaleaf.linkedfiles.csv import CsvFile
 from gigaleaf.linkedfiles.dataframe import DataframeFile
+from gigaleaf.linkedfiles.texfile import TexFile
 
 
-def load_linked_file(metadata_filename: str) -> Union[ImageFile, CsvFile, DataframeFile]:
+def load_linked_file(metadata_filename: str) -> Union[ImageFile, CsvFile, DataframeFile, TexFile]:
     """Helper to load a LinkedFile child instance from an metadata file absolute path
 
     Args:
@@ -31,11 +32,13 @@ def load_linked_file(metadata_filename: str) -> Union[ImageFile, CsvFile, Datafr
         return CsvFile(metadata_filename)
     elif data['classname'] == 'DataframeFile':
         return DataframeFile(metadata_filename)
+    elif data['classname'] == 'TexFile':
+        return TexFile(metadata_filename)
     else:
         raise ValueError(f"Unsupported LinkedFile type: {data['classname']}")
 
 
-def load_all_linked_files(overleaf_project_dir: str) -> List[Union[ImageFile, CsvFile, DataframeFile]]:
+def load_all_linked_files(overleaf_project_dir: str) -> List[Union[ImageFile, CsvFile, DataframeFile, TexFile]]:
     """Helper to load all LinkedFile child instances for a given Overleaf Project
 
     Args:
