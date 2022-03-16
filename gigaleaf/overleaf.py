@@ -21,17 +21,17 @@ class OverleafConfig:
 class Overleaf:
     def __init__(self) -> None:
         """Load configuration or initialize on instance creation"""
-        self.overleaf_config_file = os.path.join(Gigantum.get_gigantum_directory(), 'overleaf.json')
-        self.overleaf_repo_directory = os.path.join(Gigantum.get_overleaf_root_directory(), 'project')
-        self.overleaf_credential_file = os.path.join(Gigantum.get_overleaf_root_directory(), 'credentials.json')
+        self.overleaf_config_file = os.path.join(Gigantum.get_gigantum_directory(), 'overleaf.json')  #. This can stay the same
+        self.overleaf_repo_directory = os.path.join(Gigantum.get_overleaf_root_directory(), '') ## removed project - changed overleaf root directory to /mnt/labbook
+        self.overleaf_credential_file = os.path.join(Gigantum.get_overleaf_config_directory(), 'credentials.json') ## changed this to /home/jovyan/.overleaf, and get_overleaf_root_directory to get_overleaf_config_directory
 
         self.config: OverleafConfig = self._load_config()
 
         # Clone the Overleaf git repo if needed
-        if os.path.isfile(self.overleaf_config_file):
-            if not os.path.isdir(self.overleaf_repo_directory):
-                # Overleaf project does not exist locally yet, clone
-                self._clone()
+        #if os.path.isfile(self.overleaf_config_file):
+        #    if not os.path.isdir(self.overleaf_repo_directory):
+        #        # Overleaf project does not exist locally yet, clone
+        #        self._clone()
 
     def _git(self, cmd_tokens: List[str], cwd: str) -> str:
         """Execute a subprocess call and properly benchmark and log
@@ -62,7 +62,7 @@ class Overleaf:
         """
         output1 = self._git(['add', '-A'], self.overleaf_repo_directory)
         output2 = self._git(['commit', '-m', f'Updating linked Gigantum files ({Gigantum.get_current_revision()})'],
-                            self.overleaf_repo_directory)
+                            self.overleaf_repo_directory) ## I don't think get_current_revision works any more....
 
         return output1 + output2
 
@@ -106,7 +106,7 @@ class Overleaf:
         Returns:
             OverleafConfig
         """
-
+        print("_load_config:",self.overleaf_config_file)
         if not os.path.isfile(self.overleaf_config_file):
             # First time run, Prompt user and create configuration file
             self._init_config()
@@ -147,7 +147,7 @@ class Overleaf:
             json.dump(config, cf)
 
         # Commit the config file
-        Gigantum.commit_overleaf_config_file(self.overleaf_config_file)
+        #Gigantum.commit_overleaf_config_file(self.overleaf_config_file)
 
     def _get_creds(self) -> Tuple[str, str]:
         """Load the credential file. If missing, prompt the user.
@@ -191,8 +191,8 @@ class Overleaf:
         Returns:
             None
         """
-        if not os.path.isdir(Gigantum.get_overleaf_root_directory()):
-            os.makedirs(Gigantum.get_overleaf_root_directory())
+        if not os.path.isdir(Gigantum.get_overleaf_config_directory()): ## changed this to /home/jovyan/.overleaf, and get_overleaf_root_directory to get_overleaf_config_directory
+            os.makedirs(Gigantum.get_overleaf_config_directory())
 
         creds = {"email": email,
                  "password": password}

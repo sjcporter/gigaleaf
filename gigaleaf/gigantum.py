@@ -17,6 +17,14 @@ class Gigantum:
         """
         return "/mnt/labbook"
 
+    def get_project_user_home() -> str:
+        """Method to get the project user home directory
+
+        Returns:
+            str
+        """
+        return "/home/jovyan"
+
     @staticmethod
     def get_gigantum_directory() -> str:
         """Method to get the .gigantum directory
@@ -33,7 +41,16 @@ class Gigantum:
         Returns:
             str
         """
-        return os.path.join(Gigantum.get_project_root(), "output/untracked/overleaf")
+        return os.path.join(Gigantum.get_project_root(), "") # used to be output/untracked/overleaf  get_overleaf_config_directory
+    
+    @staticmethod
+    def get_overleaf_config_directory() -> str:
+        """Method to get the overleaf config directory
+
+        Returns:
+            str
+        """
+        return os.path.join(Gigantum.get_project_user_home(), ".digital-science",".overleaf")
 
     @staticmethod
     def get_current_revision() -> str:
@@ -42,7 +59,8 @@ class Gigantum:
         Returns:
             str
         """
-        return call_subprocess(['git', 'rev-parse', 'HEAD'], Gigantum.get_project_root()).strip()
+        #return call_subprocess(['git', 'rev-parse', 'HEAD'], Gigantum.get_project_root()).strip()
+        return "not implemented"
 
     @staticmethod
     def setup_gigantum_in_overleaf(overleaf_project_root: str) -> None:

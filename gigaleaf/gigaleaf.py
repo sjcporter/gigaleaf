@@ -8,6 +8,7 @@ from gigaleaf.gigantum import Gigantum
 from gigaleaf.linkedfiles.image import ImageFile
 from gigaleaf.linkedfiles.csv import CsvFile
 from gigaleaf.linkedfiles.dataframe import DataframeFile
+from gigaleaf.linkedfiles.texfile import TexFile
 from gigaleaf.linkedfiles import load_linked_file, load_all_linked_files
 
 
@@ -59,7 +60,7 @@ class Gigaleaf:
         """
         metadata_filename = ImageFile.get_metadata_filename(relative_path)
         metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
-                                     'project', 'gigantum', 'metadata', metadata_filename)
+                                      'gigantum', 'metadata', metadata_filename)
         img_file = load_linked_file(metadata_abs_filename.as_posix())
         img_file.unlink()
 
@@ -95,7 +96,7 @@ class Gigaleaf:
         """
         metadata_filename = ImageFile.get_metadata_filename(relative_path)
         metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
-                                     'project', 'gigantum', 'metadata', metadata_filename)
+                                      'gigantum', 'metadata', metadata_filename)
         csv_file = load_linked_file(metadata_abs_filename.as_posix())
         csv_file.unlink()
 
@@ -116,7 +117,7 @@ class Gigaleaf:
 
         kwargs = {"to_latex_kwargs": to_latex_kwargs}
 
-        DataframeFile.link(relative_path, **kwargs)
+        TexFile.link(relative_path, **kwargs)
 
     def unlink_dataframe(self, relative_path: str) -> None:
         """Method to unlink a dataframe file from your Overleaf project.
@@ -127,9 +128,42 @@ class Gigaleaf:
         Returns:
             None
         """
+        metadata_filename = TexFile.get_metadata_filename(relative_path)
+        metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
+                                      'gigantum', 'metadata', metadata_filename)
+        dataframe_file = load_linked_file(metadata_abs_filename.as_posix())
+        dataframe_file.unlink()
+        
+    def link_texfile(self, relative_path: str, additonal_args: Dict[str, Any]) -> None:
+        """Method to link a dataframe file to your Overleaf project for automatic updating
+
+        Args:
+            relative_path: relative path to the file from the current working dir, e.g. `../output/my_table.csv`
+            additonal_args: a dictionary of key word arguments to on (Does nothing at the moment)
+
+        Returns:
+            None
+        """
+        # Clean kwargs sent to .to_latex()
+        if 'buf' in additonal_args:
+            del additonal_args['buf']
+
+        kwargs = {"additonal_args": additonal_args}
+
+        TexFile.link(relative_path, **kwargs)
+
+    def unlink_texfile(self, relative_path: str) -> None:
+        """Method to unlink a dataframe file from your Overleaf project.
+
+        Args:
+            relative_path: relative path to the file from the current working dir, e.g. `../output/my_table.csv`
+
+        Returns:
+            None
+        """
         metadata_filename = ImageFile.get_metadata_filename(relative_path)
         metadata_abs_filename = Path(Gigantum.get_overleaf_root_directory(),
-                                     'project', 'gigantum', 'metadata', metadata_filename)
+                                      'gigantum', 'metadata', metadata_filename)
         dataframe_file = load_linked_file(metadata_abs_filename.as_posix())
         dataframe_file.unlink()
 
