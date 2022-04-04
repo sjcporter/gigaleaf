@@ -117,7 +117,7 @@ class Gigaleaf:
 
         kwargs = {"to_latex_kwargs": to_latex_kwargs}
 
-        TexFile.link(relative_path, **kwargs)
+        DataframeFile.link(relative_path, **kwargs)
 
     def unlink_dataframe(self, relative_path: str) -> None:
         """Method to unlink a dataframe file from your Overleaf project.
