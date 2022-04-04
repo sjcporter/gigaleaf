@@ -35,7 +35,7 @@ class TexFile(LinkedFile):
                                      data['gigantum_version'],
                                      data['classname'],
                                      data['content_hash'],
-                                     data['additonal_args'])
+                                     data.get('additonal_args',{}))
 
     def write_subfile(self) -> None:
         """Method to write the Latex subfile
