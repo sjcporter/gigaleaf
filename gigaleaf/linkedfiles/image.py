@@ -65,7 +65,7 @@ $caption\\label{$label}
         else:
             caption = "\n"
 
-        subfile_populated = subfile_template.substitute(filename=Path(self.metadata.gigantum_relative_path).stem,
+        subfile_populated = subfile_template.substitute(filename=Path(self.metadata.gigantum_relative_path).name,
                                                         gigantum_version=Gigantum.get_current_revision(),
                                                         content_hash=self.metadata.content_hash,
                                                         width=self.metadata.width,
