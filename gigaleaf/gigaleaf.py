@@ -45,7 +45,8 @@ class Gigaleaf:
         kwargs: Dict[str, Any] = {"caption": caption,
                                   "label": label,
                                   "width": width,
-                                  "alignment": alignment}
+                                  "alignment": alignment,
+                                  "datawrapper": datawrapper}
 
         ImageFile.link(relative_path, **kwargs)
 
