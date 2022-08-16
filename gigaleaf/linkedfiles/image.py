@@ -33,7 +33,8 @@ class ImageFile(LinkedFile):
                                  data['label'],
                                  data['width'],
                                  data['alignment'],
-                                 data['caption'])
+                                 data['caption'],
+                                 data['datawrapper'])
 
     def write_subfile(self) -> None:
         """Method to write the Latex subfile
