@@ -16,6 +16,7 @@ class ImageFileMetadata(LinkedFileMetadata):
     width: str
     alignment: str
     caption: Optional[str] = None
+    datawraper: Optional[str] = None
 
 
 @dataclass
