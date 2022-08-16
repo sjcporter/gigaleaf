@@ -18,7 +18,7 @@ class Gigaleaf:
         self.overleaf = Overleaf()
         self.gigantum = Gigantum(self.overleaf.overleaf_repo_directory)
 
-    def link_image(self, relative_path: str, caption: Optional[str] = None, label: Optional[str] = None,
+    def link_image(self, relative_path: str, caption: Optional[str] = None, datawrapper: Optional[str] = None,label: Optional[str] = None,
                    width: str = "0.5\\textwidth", alignment: str = 'center') -> None:
         """Method to link an image file to your Overleaf project for automatic updating
 
