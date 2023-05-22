@@ -52,7 +52,7 @@ class ImageFile(LinkedFile):
 % Image content hash: $content_hash
 \\begin{document}
 
-\\begin{figure}[bh]
+\\begin{figure}[h]
 \\includegraphics[width=$width, $alignment]{$filename}
 $caption\\label{$label}
 
